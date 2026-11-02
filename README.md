@@ -10,6 +10,14 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Laravel-10.x-FF2D20?style=flat-square&logo=laravel&logoColor=white" alt="Laravel 10">
+  <img src="https://img.shields.io/badge/PHP-8.2-777BB4?style=flat-square&logo=php&logoColor=white" alt="PHP 8.2">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/MySQL-005C84?style=flat-square&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/Architecture-Clean_MVC_&_RBAC-success?style=flat-square" alt="Architecture">
+</p>
+
+<p align="center">
   <a href="#-ringkasan-proyek-executive-summary">Ringkasan Proyek</a> •
   <a href="#-fitur-utama--solusi-bisnis">Fitur & Solusi Bisnis</a> •
   <a href="#-arsitektur-dan-role-permission">Arsitektur & RBAC</a> •
@@ -116,8 +124,8 @@ Aplikasi menerapkan pemisahan hak akses berbasis peran yang ketat (*Strict RBAC*
 
 1. **Clone Repository:**
    ```bash
-   git clone https://github.com/USERNAME/Gyokai02.git
-   cd Gyokai02
+   git clone https://github.com/JakaaaSukma/website-official-dan-pengelolaan-data-dengan-client.git
+   cd website-official-dan-pengelolaan-data-dengan-client
    ```
 
 2. **Install Dependensi Composer:**
@@ -130,15 +138,7 @@ Aplikasi menerapkan pemisahan hak akses berbasis peran yang ketat (*Strict RBAC*
    ```bash
    cp .env.example .env
    ```
-   Buka file `.env` dan sesuaikan koneksi database serta konfigurasi server lokal Anda:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=gyokai02
-   DB_USERNAME=root
-   DB_PASSWORD=
-   ```
+   Buka file `.env` dan sesuaikan konfigurasi koneksi database (`DB_*`) serta kredensial server lokal Anda.
 
 4. **Generate Application Key:**
    ```bash
