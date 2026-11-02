@@ -1,0 +1,171 @@
+# =====================================================================
+# 1. ENVIRONMENT CONFIGURATIONS & CREDENTIALS (CRITICAL SECURITY)
+# =====================================================================
+.env
+.env.*
+!.env.example
+database/gmail/
+storage/app/google/
+scripts/payroll_mailer/token.json
+*.key
+*.pem
+*.crt
+*.pfx
+token.json
+credentials*.json
+
+# =====================================================================
+# 2. APPLICATION RUNTIME, SESSIONS, CACHE, LOGS & PRIVATE USER UPLOADS
+# =====================================================================
+/storage/*.key
+/storage/app/*
+!/storage/app/.gitignore
+!/storage/app/public/
+/storage/app/public/*
+!/storage/app/public/.gitignore
+/storage/app/payroll_uploads/
+/storage/app/temp/
+/storage/app/public/cv_applicants/
+/storage/app/public/payslips/
+
+/storage/framework/cache/*
+!/storage/framework/cache/.gitignore
+!/storage/framework/cache/data/
+/storage/framework/cache/data/*
+!/storage/framework/cache/data/.gitignore
+
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+
+/storage/framework/testing/*
+!/storage/framework/testing/.gitignore
+
+/storage/logs/*
+!/storage/logs/.gitignore
+
+/public/storage
+/logs/
+*.log
+stderr.log
+/tmp/
+.phpunit.result.cache
+
+# =====================================================================
+# 3. COMPOSER, NPM & JAVASCRIPT BUILD ARTIFACTS
+# =====================================================================
+/node_modules/
+/vendor/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/public/hot
+/public/build
+
+# =====================================================================
+# 4. PYTHON ENVIRONMENTS, COMPILED BYTECODE & LOGS
+# =====================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+ENV/
+scripts/payroll_mailer/venv/
+scripts/payroll_mailer/output/
+scripts/payroll_mailer/uploads/
+scripts/payroll_mailer/logs/
+python_scripts/**/logs/
+
+# =====================================================================
+# 5. OS, IDE & LOCAL EDITOR ARTIFACTS
+# =====================================================================
+.DS_Store
+*/.DS_Store
+Thumbs.db
+ehthumbs.db
+/.idea/
+/.vscode/
+Homestead.json
+Homestead.yaml
+*.swp
+*.swo
+*~
+
+# =====================================================================
+# 6. ARCHIVES, BACKUPS & DATABASE DUMPS
+# =====================================================================
+*.zip
+*.rar
+*.tar.gz
+*.7z
+*.bak
+*.sql
+app.zip
+resources.zip
+routes.zip
+add_images_column.sql
+
+# =====================================================================
+# 7. AI AGENTS CONTEXT & DEV DOCUMENTATION (PER USER REQUEST)
+# =====================================================================
+AGENTS.md
+PROJECT_ANALYSIS_GUIDE.md
+FINANCE_RELATED_FILES.md
+project_notes.md
+SECURITY.md
+/docs/
+
+# =====================================================================
+# 8. MOBILE APP PROJECT (SEPARATE PROJECT / REPO)
+# =====================================================================
+/LPK-Gyokai-Admin APP MOBILE/
+/mobile-app/
+
+# =====================================================================
+# 9. LEGACY PROCEDURAL PHP PAGES & SCRATCH TEST SCRIPTS AT ROOT
+# =====================================================================
+/about.php
+/benefit-labor-supply.php
+/benefit-outsourcing.php
+/benefit-pemagangan.php
+/benefit-training.php
+/contact.php
+/download-company-profile.php
+/our-services.php
+/team.php
+/config.php
+/includes/
+/check_database.php
+/check_future_dates.php
+/check_sheet_data.php
+/check_user.php
+/clean_and_resync.php
+/debug_google_sheet.php
+/fix_gender_column.php
+/fix_members_table.php
+/list_users.php
+/setup-database.php
+/test.php
+/test_google_sheet_sync.php
+/test_service.php
+/app.js
+
+# =====================================================================
+# 10. UNUSED / DUPLICATE DIRECTORIES AT ROOT
+# =====================================================================
+/temp_laravel/
+/resourcesviewscompanymembers/
+/appService/
+/laravel/
+/fasilitas & galeri/
+/css/
+/js/
+/img/
+/lib/
+/logo/
+/scss/
+/public/public/
+/public/hris.lpkgyokai.com/
