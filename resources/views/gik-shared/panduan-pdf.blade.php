@@ -86,6 +86,11 @@
     <div class="toc">
         <h2>📑 Daftar Isi</h2>
 
+        <div class="toc-item" style="background: #FEF2F2; border-radius: 8px; padding: 10px; margin-bottom: 8px;">
+            <div class="toc-num" style="background: #DC2626; color: white;">🧭</div>
+            <div class="toc-text" style="font-weight: 700; color: #991B1B;">Diagram Alur Kerja Terintegrasi (Master Flowchart)</div>
+        </div>
+
         @if($role === 'superadmin')
             @php $tocItems = [
                 'Login ke Sistem',
@@ -96,6 +101,7 @@
                 'Requests & Operations',
                 'All Active Participants (Peserta Aktif)',
                 'All Company Candidates',
+                'Manajemen Off-boarding Peserta',
                 'Manajemen Pelanggaran',
                 'Pemberhentian Sementara',
                 'BPJS Ketenagakerjaan, F2A & Kecelakaan Kerja',
@@ -108,8 +114,8 @@
                 'Dashboard',
                 'Candidate Database (Talent)',
                 'Pengajuan Tenaga Ahli',
-                'Request Hub (Pengajuan Kandidat, Extend, Off-boarding)',
-                'Operations',
+                'Pusat Pengajuan (Hub: Review Kandidat, Extend, Off-boarding)',
+                'Riwayat & Status Request (Operations)',
                 'Candidates (Data Calon Peserta)',
                 'BPJS Ketenagakerjaan, F2A & Kecelakaan Kerja',
                 'Laporan Pelanggaran',
@@ -125,6 +131,91 @@
             <div class="toc-text">{{ $item }}</div>
         </div>
         @endforeach
+    </div>
+
+    {{-- ==================== MASTER FLOWCHART ==================== --}}
+    <div class="section" style="page-break-after: always;">
+        <div class="section-header" style="border-bottom: 3px solid #DC2626;">
+            <div class="section-num" style="background: #991B1B;">🧭</div>
+            <div class="section-title" style="color: #991B1B;">Diagram Alur Operasional Terintegrasi (Master Flowchart)</div>
+        </div>
+        <p style="font-size:13px;color:#4b5563;margin-bottom:16px;">
+            Peta interaksi terpadu antara <strong>Tim Rekrutmen LPK Gyokai (Super Admin Rekrutmen)</strong> dan <strong>Perusahaan Mitra Industri Jepang & Lokal (HR Company)</strong> dalam siklus kerja Gyokai Connect.
+        </p>
+
+        {{-- Swimlane Box Comparison --}}
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px;">
+            <thead>
+                <tr style="background: #f9fafb;">
+                    <th style="width: 50%; padding: 10px; border: 2px solid #FCA5A5; color: #991B1B; text-align: left;">
+                        🏛️ Tim Rekrutmen LPK Gyokai (Super Admin)
+                    </th>
+                    <th style="width: 50%; padding: 10px; border: 2px solid #93C5FD; color: #1E40AF; text-align: left;">
+                        🏢 Perusahaan Mitra Industri (HR Company)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #fff5f5;">
+                        <strong>1. Onboarding Mitra:</strong> Mendaftarkan perusahaan klien di <em>Client Account Mgmt</em> dan mendistribusikan kredensial akses.
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #eff6ff;">
+                        <strong>1. Login & Profil:</strong> Login di portal via tab <em>Company/HR Login</em> dan melengkapi data profil perusahaan.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #fff5f5;">
+                        <strong>2. Pengajuan Kandidat:</strong> Upload / import batch kandidat via Excel di menu <em>Add New Contract</em> dan kirim ke HR Klien.
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #eff6ff;">
+                        <strong>2. Seleksi Kandidat:</strong> Membuka <em>Review Kandidat Baru (Inbox Seleksi)</em>, centang <strong>Lolos / Tidak Lolos</strong> per kandidat, lalu submit hasil.
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 8px 12px; background: #ECFDF5; border: 1px solid #A7F3D0; text-align: center; color: #065F46; font-weight: 700;">
+                        ⚡ Sistem Otomatis: Kandidat yang lolos seleksi otomatis dibuatkan entri Kontrak Peserta Aktif (hr_contracts) di kedua belah pihak.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #fff5f5;">
+                        <strong>3. Review Extend Kontrak:</strong> Menerima permohonan di <em>Monitoring Request & Operasi</em> $\rightarrow$ Quick Approve atau Review Modal $\rightarrow$ Terbitkan kontrak baru (ID-EXT).
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #eff6ff;">
+                        <strong>3. Pengajuan Extend:</strong> Memantau peserta <em>Expiring Soon</em> $\rightarrow$ masuk menu <em>Extend Contract</em> $\rightarrow$ multi-select peserta & isi tgl kontrak baru.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #fff5f5;">
+                        <strong>4. Manajemen Off-boarding:</strong>
+                        <ul style="margin: 4px 0 0 16px; font-size: 11px;">
+                            <li><strong>Jalur A:</strong> Review & approve permohonan off-boarding dari klien.</li>
+                            <li><strong>Jalur B (Direct):</strong> Eksekusi off-boarding langsung multi-select lintas tenant $\rightarrow$ auto-notify ke HR Klien.</li>
+                        </ul>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #eff6ff;">
+                        <strong>4. Pengajuan Off-boarding:</strong>
+                        <p style="margin: 4px 0 0; font-size: 11px;">Membuka <em>Off-boarding Batch</em> $\rightarrow$ pilih peserta selesai masa kontrak/resign $\rightarrow$ tentukan tanggal efektif & alasan $\rightarrow$ kirim request.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #fff5f5;">
+                        <strong>5. Sanksi & Kepatuhan:</strong> Memverifikasi laporan pelanggaran $\rightarrow$ menerbitkan SP1/SP2/SP3 $\rightarrow$ meninjau permohonan suspend $\rightarrow$ memproses klaim BPJS.
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #eff6ff;">
+                        <strong>5. Pelaporan Insiden:</strong> Melaporkan pelanggaran tata tertib, pengajuan suspend peserta mangkir, dan pelaporan iuran F2A / kecelakaan kerja.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #fff5f5;">
+                        <strong>6. Matching Engine Talent:</strong> Mencocokkan kriteria permintaan klien dengan database talent SSW/Tokutei Ginou $\rightarrow$ mengirimkan shortlist profil.
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #e5e7eb; vertical-align: top; background: #eff6ff;">
+                        <strong>6. Permintaan Tenaga Ahli:</strong> Mengisi form <em>Pengajuan Tenaga Ahli</em> atau mengirimkan <em>Call Request</em> dari database kandidat.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     {{-- ==================== SECTIONS ==================== --}}

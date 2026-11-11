@@ -16,9 +16,19 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
         <span class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600 text-sm">📑</span>
-        Daftar Isi
+        Daftar Isi & Peta Alur
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <a href="#flowchart" class="md:col-span-2 flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border-2 border-red-200 bg-gradient-to-r from-red-50 to-white hover:border-red-300 hover:shadow-sm transition group">
+            <div class="flex items-center gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center text-sm font-bold shadow-sm">🧭</div>
+                <div>
+                    <span class="text-sm font-extrabold text-red-950 block">Diagram Alur Operasional Terintegrasi (Flowchart Gyokai Connect)</span>
+                    <span class="text-xs text-red-700">Visualisasi swimlane interaksi lengkap antara Tim Rekrutmen Gyokai & Perusahaan Mitra</span>
+                </div>
+            </div>
+            <span class="text-xs font-extrabold text-red-700 bg-red-100 group-hover:bg-red-200 px-3 py-1.5 rounded-xl transition">&rarr; Lihat Diagram</span>
+        </a>
         <a href="#login" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
             <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">1</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Login ke Sistem</span>
@@ -37,11 +47,11 @@
         </a>
         <a href="#request-hub" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
             <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">5</span>
-            <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Request Hub (Pengajuan Kandidat, Extend, Off-boarding)</span>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Pusat Pengajuan (Hub: Review Kandidat, Extend, Off-boarding)</span>
         </a>
         <a href="#operations" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
             <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">6</span>
-            <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Operations</span>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Riwayat & Status Request (Operations)</span>
         </a>
         <a href="#candidates" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
             <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">7</span>
@@ -69,6 +79,9 @@
         </a>
     </div>
 </div>
+
+{{-- MASTER FLOWCHART COMPONENT --}}
+@include('gik-shared.flowchart-component')
 
 {{-- Content Sections --}}
 <div class="space-y-6">

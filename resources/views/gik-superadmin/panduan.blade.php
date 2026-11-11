@@ -16,9 +16,19 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
         <span class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600 text-sm">📑</span>
-        Daftar Isi
+        Daftar Isi & Peta Alur
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <a href="#flowchart" class="md:col-span-2 flex items-center justify-between gap-3 px-5 py-4 rounded-2xl border-2 border-red-200 bg-gradient-to-r from-red-50 to-white hover:border-red-300 hover:shadow-sm transition group">
+            <div class="flex items-center gap-3.5">
+                <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center text-sm font-bold shadow-sm">🧭</div>
+                <div>
+                    <span class="text-sm font-extrabold text-red-950 block">Diagram Alur Operasional Terintegrasi (Flowchart Gyokai Connect)</span>
+                    <span class="text-xs text-red-700">Visualisasi swimlane interaksi lengkap antara Tim Rekrutmen Gyokai & Perusahaan Mitra</span>
+                </div>
+            </div>
+            <span class="text-xs font-extrabold text-red-700 bg-red-100 group-hover:bg-red-200 px-3 py-1.5 rounded-xl transition">&rarr; Lihat Diagram</span>
+        </a>
         <a href="#login" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
             <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">1</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Login ke Sistem</span>
@@ -51,28 +61,35 @@
             <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">8</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">All Company Candidates</span>
         </a>
+        <a href="#offboarding" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
+            <span class="w-7 h-7 rounded-lg bg-orange-100 group-hover:bg-orange-200 flex items-center justify-center text-xs font-bold text-orange-700">9</span>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-orange-700">Manajemen Off-boarding Peserta</span>
+        </a>
         <a href="#violations" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
-            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">9</span>
+            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">10</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Manajemen Pelanggaran</span>
         </a>
         <a href="#suspensions" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
-            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">10</span>
+            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">11</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Pemberhentian Sementara</span>
         </a>
         <a href="#bpjs" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
-            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">11</span>
+            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">12</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">BPJS Ketenagakerjaan, F2A & Kecelakaan Kerja</span>
         </a>
         <a href="#inbox" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
-            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">12</span>
+            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">13</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Client Inbox & Messaging</span>
         </a>
         <a href="#security" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-red-200 hover:bg-red-50/50 transition group">
-            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">13</span>
+            <span class="w-7 h-7 rounded-lg bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-xs font-bold text-gray-600 group-hover:text-red-600">14</span>
             <span class="text-sm font-medium text-gray-700 group-hover:text-red-700">Log Aktivitas & Keamanan Akun</span>
         </a>
     </div>
 </div>
+
+{{-- MASTER FLOWCHART COMPONENT --}}
+@include('gik-shared.flowchart-component')
 
 {{-- Content Sections --}}
 <div class="space-y-6">
@@ -266,10 +283,35 @@
         </ul>
     </div>
 
-    {{-- 9. Violations --}}
+    {{-- 9. Off-boarding Management --}}
+    <div id="offboarding" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 scroll-mt-6">
+        <div class="flex items-center gap-3 mb-4">
+            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white text-sm font-bold">9</span>
+            <h2 class="text-xl font-bold text-gray-800">Manajemen Off-boarding Peserta</h2>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">Pusat kendali penyelesaian masa kontrak, pelepasan peserta, dan arsip data peserta off-boarded lintas seluruh perusahaan mitra.</p>
+        
+        <h3 class="text-sm font-bold text-gray-700 mb-2">🔧 Fitur Utama:</h3>
+        <ul class="list-disc list-inside text-sm text-gray-600 space-y-1 ml-2 mb-4">
+            <li><strong>Tab Pengajuan Masuk dari HR Klien:</strong> Memeriksa permohonan off-boarding batch yang diajukan oleh perusahaan mitra, lengkap dengan modal review interaktif dan opsi quick approve/reject.</li>
+            <li><strong>Tab Arsip Peserta Off-boarded:</strong> Melihat riwayat seluruh peserta yang telah selesai masa kontrak/off-board, dilengkapi filter perusahaan dan pencarian.</li>
+            <li><strong>+ Proses Off-boarding Langsung:</strong> Otoritas Super Admin untuk memproses off-boarding multi-peserta secara langsung tanpa menunggu pengajuan klien (misal peserta bermasalah, deportasi, atau pemutusan darurat).</li>
+            <li><strong>Aksi Cepat di Tabel Peserta:</strong> Tombol "Off-board" langsung pada baris tabel <em>All Active Participants</em> dan detail peserta.</li>
+        </ul>
+
+        <h3 class="text-sm font-bold text-gray-700 mb-2">📋 Alur Review Pengajuan Klien:</h3>
+        <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1 ml-2">
+            <li>Buka menu <strong>"Manajemen Off-boarding"</strong> di sidebar (lihat badge notifikasi angka pengajuan pending).</li>
+            <li>Pada Tab 1 <strong>"Pengajuan Masuk dari HR Klien"</strong>, klik tombol <strong>"Review Permohonan"</strong>.</li>
+            <li>Periksa daftar nama peserta, tanggal efektif keluar, dan alasan/catatan.</li>
+            <li>Klik <strong>"Setujui Permohonan (Approve)"</strong> untuk langsung mengarsipkan peserta, atau isi alasan jika ingin <strong>"Tolak Permohonan"</strong>.</li>
+        </ol>
+    </div>
+
+    {{-- 10. Violations --}}
     <div id="violations" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 scroll-mt-6">
         <div class="flex items-center gap-3 mb-4">
-            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-white text-sm font-bold">9</span>
+            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-white text-sm font-bold">10</span>
             <h2 class="text-xl font-bold text-gray-800">Manajemen Pelanggaran</h2>
         </div>
         <p class="text-sm text-gray-600 mb-4">Kelola laporan pelanggaran peserta yang dilaporkan oleh HR perusahaan.</p>
