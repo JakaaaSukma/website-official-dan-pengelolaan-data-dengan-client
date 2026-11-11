@@ -6,6 +6,7 @@ use App\Models\HrContract;
 use App\Models\HrCandidate;
 use App\Models\HrRequest;
 use App\Models\HrMessage;
+use App\Models\Client;
 use App\Helpers\HrAuditHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -94,17 +95,45 @@ class HrDashboardController extends Controller
         $isSuperAdmin = $user->isSuperAdminRecruitment();
         $viewingCompanyId = $request->query('company_id');
 
+        $query = $isSuperAdmin ? HrRequest::withoutTenant() : HrRequest::query();
+
         if ($isSuperAdmin && $viewingCompanyId) {
-            $requests = HrRequest::withoutTenant()->where('company_id', $viewingCompanyId);
-        } else {
-            $requests = HrRequest::query();
+            $query->where('company_id', $viewingCompanyId);
         }
 
-        $requests = $requests->orderBy('created_at', 'desc')->paginate(15);
+        if ($q = trim($request->query('q', ''))) {
+            $query->where(function ($sub) use ($q) {
+                $sub->where('request_number', 'like', "%{$q}%")
+                    ->orWhere('first_name', 'like', "%{$q}%")
+                    ->orWhere('last_name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%")
+                    ->orWhereHas('batchItems.contract', function ($c) use ($q) {
+                        $c->where('first_name', 'like', "%{$q}%")
+                          ->orWhere('last_name', 'like', "%{$q}%")
+                          ->orWhere('employee_id', 'like', "%{$q}%");
+                    });
+            });
+        }
+
+        if ($type = $request->query('type')) {
+            $query->where('request_type', $type);
+        }
+
+        if ($status = $request->query('status')) {
+            $query->where('status', $status);
+        }
+
+        $requests = $query->with(['company', 'contract', 'batchItems.contract'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15)
+            ->withQueryString();
+
+        $companies = $isSuperAdmin ? Client::where('is_active', 1)->orderBy('company_name')->get() : collect();
 
         return view('gik-hrd.operations', [
             'requests' => $requests,
-            'pageTitle' => 'Operations',
+            'companies' => $companies,
+            'pageTitle' => $isSuperAdmin ? 'Requests & Operations (All Companies)' : 'Riwayat & Status Request',
         ]);
     }
 

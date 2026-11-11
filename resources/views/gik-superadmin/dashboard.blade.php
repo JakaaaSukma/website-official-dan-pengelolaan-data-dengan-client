@@ -118,57 +118,81 @@
         </div>
 
         <a href="{{ route('gik-superadmin.inbox') }}" class="w-full mt-auto inline-flex items-center justify-center gap-2 px-4 py-3 bg-gik-primary hover:bg-gik-primary-dark text-white rounded-xl text-sm font-bold transition">
-            View All Requests
+            Buka Semua Pesan Masuk (Inbox)
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
         </a>
     </div>
 </div>
 
-<!-- Quick Actions Super Admin: Add New Contract + All Pengajuan -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-    <a href="{{ route('gik-superadmin.add-contract.create') }}" class="group relative rounded-3xl overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-green-700 text-white shadow-lg shadow-emerald-200 p-7 hover:shadow-xl hover:-translate-y-0.5 transition-all">
+<!-- Quick Actions Super Admin: Add New Contract + All Pengajuan + Off-boarding -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+    <a href="{{ route('gik-superadmin.add-contract.create') }}" class="group relative rounded-3xl overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-green-700 text-white shadow-lg shadow-emerald-200 p-6 hover:shadow-xl hover:-translate-y-0.5 transition-all">
         <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/10"></div>
-        <div class="absolute bottom-0 right-0 w-32 h-32 rounded-full bg-white/5"></div>
         <div class="relative z-10">
-            <div class="flex items-start justify-between mb-6">
-                <div class="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center group-hover:scale-110 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center group-hover:scale-110 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                 </div>
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur text-[11px] font-bold uppercase tracking-wider">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur text-[10px] font-bold uppercase tracking-wider">
                     NEW FLOW
-                    <span class="w-1.5 h-1.5 rounded-full bg-yellow-300 animate-pulse"></span>
                 </div>
             </div>
-            <h3 class="text-2xl font-extrabold mb-1.5">Tambah Pengajuan Kandidat Baru</h3>
-            <p class="text-sm text-white/80 leading-relaxed mb-5">Add New Contract — Pilih company tujuan, input kandidat via manual atau Excel, submit untuk direview HR Company owner.</p>
-            <div class="inline-flex items-center gap-2 text-sm font-bold group-hover:gap-3.5 transition-all">
-                Create Pengajuan
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.4" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            <h3 class="text-xl font-extrabold mb-1">Tambah Pengajuan Kandidat</h3>
+            <p class="text-xs text-white/80 leading-relaxed mb-4">Pilih tenant tujuan, input kandidat baru via Excel/manual untuk direview HR.</p>
+            <div class="inline-flex items-center gap-2 text-xs font-bold group-hover:gap-3 transition-all">
+                Buat Pengajuan
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.4" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             </div>
         </div>
     </a>
 
-    <a href="{{ route('gik-superadmin.add-contract.list') }}" class="group bg-white rounded-3xl shadow-sm border border-gray-100 p-7 hover:shadow-md hover:border-blue-200 hover:-translate-y-0.5 transition-all block">
-        <div class="flex items-start justify-between mb-6">
-            <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center group-hover:scale-110 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+    <a href="{{ route('gik-superadmin.add-contract.list') }}" class="group bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-blue-200 hover:-translate-y-0.5 transition-all block">
+        <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center group-hover:scale-110 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             </div>
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50/60 text-[11px] font-bold uppercase tracking-wider text-blue-700">
-                TENANT WIDE
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-[10px] font-bold uppercase tracking-wider text-blue-700">
+                MONITORING
             </div>
         </div>
-        <h3 class="text-xl font-extrabold text-gray-800 mb-1.5">Daftar Semua Pengajuan Kandidat</h3>
-        <p class="text-sm text-gray-500 leading-relaxed mb-5">Monitoring semua Add New Contract batches yang diajukan ke Company A, B, C, D beserta status review dan ringkasan lolos/tidak lolos seleksi.</p>
-        <div class="inline-flex items-center gap-2 text-sm font-bold text-blue-700 group-hover:gap-3.5 transition-all">
-            Buka Daftar
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.4" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        <h3 class="text-xl font-extrabold text-gray-800 mb-1">Daftar Pengajuan Kandidat</h3>
+        <p class="text-xs text-gray-500 leading-relaxed mb-4">Monitoring semua batch seleksi kandidat yang dikirim ke HR Company.</p>
+        <div class="inline-flex items-center gap-2 text-xs font-bold text-blue-700 group-hover:gap-3 transition-all">
+            Buka Daftar Batch
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.4" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </div>
+    </a>
+
+    <a href="{{ route('gik-superadmin.offboarding.index') }}" class="group bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-orange-200 hover:-translate-y-0.5 transition-all block">
+        <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center group-hover:scale-110 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            </div>
+            @php
+                $pendingOffCountDash = \App\Models\HrRequest::withoutTenant()->where('request_type', 'off_boarding')->whereIn('status', ['submitted', 'in_review'])->count();
+            @endphp
+            @if($pendingOffCountDash > 0)
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500 text-white text-[10px] font-extrabold uppercase tracking-wider">
+                    {{ $pendingOffCountDash }} PERLU REVIEW
+                </span>
+            @else
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-50 text-[10px] font-bold uppercase tracking-wider text-orange-700">
+                    TERMINASI
+                </span>
+            @endif
+        </div>
+        <h3 class="text-xl font-extrabold text-gray-800 mb-1">Manajemen Off-boarding</h3>
+        <p class="text-xs text-gray-500 leading-relaxed mb-4">Review pengajuan pelepasan dari klien atau eksekusi off-boarding langsung.</p>
+        <div class="inline-flex items-center gap-2 text-xs font-bold text-orange-700 group-hover:gap-3 transition-all">
+            Buka Manajemen Off-board
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.4" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
         </div>
     </a>
 </div>
 
 <!-- Stats Row -->
 <div class="grid grid-cols-2 md:grid-cols-5 gap-5 mb-8">
-    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+    <a href="{{ route('gik-superadmin.employees') }}" class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:border-green-200 transition block">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-green-100 text-green-700 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg></div>
             <div>
@@ -176,8 +200,8 @@
                 <div class="text-2xl font-extrabold text-gray-800 leading-tight">{{ $stats['new'] ?? 0 }}</div>
             </div>
         </div>
-    </div>
-    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+    </a>
+    <a href="{{ route('gik-superadmin.operations') }}?status=completed" class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:border-blue-200 transition block">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
             <div>
@@ -185,8 +209,8 @@
                 <div class="text-2xl font-extrabold text-gray-800 leading-tight">{{ $stats['completed'] ?? 0 }}</div>
             </div>
         </div>
-    </div>
-    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+    </a>
+    <a href="{{ route('gik-superadmin.operations') }}?status=submitted" class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:border-amber-200 transition block">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
             <div>
@@ -194,8 +218,8 @@
                 <div class="text-2xl font-extrabold text-gray-800 leading-tight">{{ $stats['pending'] ?? 0 }}</div>
             </div>
         </div>
-    </div>
-    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+    </a>
+    <a href="{{ route('gik-superadmin.talents') }}" class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:border-purple-200 transition block">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
             <div>
@@ -203,8 +227,8 @@
                 <div class="text-2xl font-extrabold text-gray-800 leading-tight">{{ $stats['talents'] ?? 0 }}</div>
             </div>
         </div>
-    </div>
-    <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+    </a>
+    <a href="{{ route('gik-superadmin.clients') }}" class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:border-red-200 transition block">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-red-100 text-gik-primary-dark flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
             <div>
@@ -212,7 +236,7 @@
                 <div class="text-2xl font-extrabold text-gray-800 leading-tight">{{ $stats['clients'] ?? 0 }}</div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
 
 <!-- KLIEN: Client Account Management Table (big) -->

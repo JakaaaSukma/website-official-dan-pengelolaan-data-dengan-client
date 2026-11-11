@@ -1,7 +1,11 @@
 @extends(request()->routeIs('gik-superadmin.*') ? 'layouts.gik-superadmin' : 'layouts.gik-hrd')
 
 @php
-$rPrefix = request()->routeIs('gik-superadmin.*') ? 'gik-superadmin.' : 'gik-hrd.';
+$isSA = request()->routeIs('gik-superadmin.*');
+$rPrefix = $isSA ? 'gik-superadmin.' : 'gik-hrd.';
+$addContractUrl = $isSA ? route('gik-superadmin.add-contract.create') : route('gik-hrd.add-contract.list');
+$extendContractUrl = $isSA ? route('gik-superadmin.operations', ['type' => 'extend_contract']) : route('gik-hrd.batch.select', 'extend_contract');
+$offboardingUrl = $isSA ? route('gik-superadmin.offboarding.index') : route('gik-hrd.batch.select', 'off_boarding');
 @endphp
 
 @section('content')
@@ -137,7 +141,7 @@ $rPrefix = request()->routeIs('gik-superadmin.*') ? 'gik-superadmin.' : 'gik-hrd
                 <h2 class="text-xl font-bold text-gray-800">Pusat Request</h2>
             </div>
             <div class="space-y-3.5">
-                <a href="{{ route($rPrefix . 'requests.create', 'add_contract') }}" class="group block p-4 border border-gray-200 rounded-xl hover:border-green-200 hover:bg-green-50/50 transition">
+                <a href="{{ $addContractUrl }}" class="group block p-4 border border-gray-200 rounded-xl hover:border-green-200 hover:bg-green-50/50 transition">
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex items-start gap-3">
                             <div class="w-11 h-11 rounded-xl bg-green-100 text-green-700 flex items-center justify-center group-hover:scale-105 transition">
@@ -145,13 +149,13 @@ $rPrefix = request()->routeIs('gik-superadmin.*') ? 'gik-superadmin.' : 'gik-hrd
                             </div>
                             <div>
                                 <div class="font-bold text-gray-800 text-sm">Add New Contract</div>
-                                <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">Initiate onboarding for a new hire.</div>
+                                <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ $isSA ? 'Buat pengajuan kandidat baru ke klien.' : 'Review pengajuan kandidat baru dari Gyokai.' }}</div>
                             </div>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 group-hover:text-green-600 group-hover:translate-x-0.5 transition mt-1.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </div>
                 </a>
-                <a href="{{ route($rPrefix . 'requests.create', 'extend_contract') }}" class="group block p-4 border border-gray-200 rounded-xl hover:border-red-200 hover:bg-red-50/50 transition">
+                <a href="{{ $extendContractUrl }}" class="group block p-4 border border-gray-200 rounded-xl hover:border-blue-200 hover:bg-blue-50/50 transition">
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex items-start gap-3">
                             <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center group-hover:scale-105 transition">
@@ -159,13 +163,13 @@ $rPrefix = request()->routeIs('gik-superadmin.*') ? 'gik-superadmin.' : 'gik-hrd
                             </div>
                             <div>
                                 <div class="font-bold text-gray-800 text-sm">Extend Contract</div>
-                                <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">Renew an existing employee agreement.</div>
+                                <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ $isSA ? 'Monitoring permohonan extend dari klien.' : 'Pilih peserta untuk perpanjang kontrak.' }}</div>
                             </div>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 group-hover:text-gik-accent group-hover:translate-x-0.5 transition mt-1.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </div>
                 </a>
-                <a href="{{ route($rPrefix . 'requests.create', 'off_boarding') }}" class="group block p-4 border border-gray-200 rounded-xl hover:border-red-200 hover:bg-red-50/50 transition">
+                <a href="{{ $offboardingUrl }}" class="group block p-4 border border-gray-200 rounded-xl hover:border-red-200 hover:bg-red-50/50 transition">
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex items-start gap-3">
                             <div class="w-11 h-11 rounded-xl bg-red-100 text-red-700 flex items-center justify-center group-hover:scale-105 transition">
@@ -173,7 +177,7 @@ $rPrefix = request()->routeIs('gik-superadmin.*') ? 'gik-superadmin.' : 'gik-hrd
                             </div>
                             <div>
                                 <div class="font-bold text-gray-800 text-sm">Off-boarding</div>
-                                <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">Process employee departure.</div>
+                                <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ $isSA ? 'Pusat manajemen dan arsip off-boarding.' : 'Ajukan pelepasan / akhir masa kontrak peserta.' }}</div>
                             </div>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 group-hover:text-red-600 group-hover:translate-x-0.5 transition mt-1.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>

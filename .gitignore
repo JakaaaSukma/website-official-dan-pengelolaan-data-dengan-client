@@ -169,3 +169,5 @@ SECURITY.md
 /scss/
 /public/public/
 /public/hris.lpkgyokai.com/
+# Playwright CLI output (may contain credentials)
+.playwright-cli/

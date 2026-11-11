@@ -48,6 +48,14 @@
                 <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>{{ $dept }}</option>
             @endforeach
         </select>
+        <select name="status" onchange="this.form.submit()" class="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-200">
+            <option value="all">Semua Status</option>
+            <option value="active" {{ ($selectedStatus ?? '') === 'active' ? 'selected' : '' }}>Aktif</option>
+            <option value="extended" {{ ($selectedStatus ?? '') === 'extended' ? 'selected' : '' }}>Extended</option>
+            <option value="offboarded" {{ ($selectedStatus ?? '') === 'offboarded' ? 'selected' : '' }}>Off-boarded</option>
+            <option value="expired" {{ ($selectedStatus ?? '') === 'expired' ? 'selected' : '' }}>Expired</option>
+            <option value="suspended" {{ ($selectedStatus ?? '') === 'suspended' ? 'selected' : '' }}>Suspended</option>
+        </select>
         <button type="submit" class="hidden">Search</button>
     </form>
     <div class="overflow-x-auto">
@@ -111,6 +119,10 @@
                             <a href="{{ route('gik-superadmin.employees.show', $emp) }}" class="text-gik-accent hover:text-gik-primary">View</a>
                             <span class="text-gray-300">|</span>
                             <a href="{{ route('gik-superadmin.employees.edit', $emp) }}" class="text-gik-accent hover:text-gik-primary">Edit</a>
+                            @if(in_array($emp->status, ['active', 'extended']))
+                                <span class="text-gray-300">|</span>
+                                <button type="button" onclick="openOffboardSingleModal({{ $emp->id }}, '{{ addslashes($emp->full_name) }}', '{{ addslashes(optional($emp->company)->company_name ?? '-') }}')" class="text-orange-600 hover:text-orange-800 font-bold">Off-board</button>
+                            @endif
                             <span class="text-gray-300">|</span>
                             <form method="POST" action="{{ route('gik-superadmin.employees.destroy', $emp) }}" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus permanen data ini? Tindakan ini tidak dapat dibatalkan.');">
                                 @csrf
@@ -134,4 +146,69 @@
         </div>
     @endif
 </div>
+
+<!-- Modal Single Off-boarding -->
+<div id="singleOffboardModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden">
+        <form id="singleOffboardForm" method="POST" action="">
+            @csrf
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-orange-50 to-white">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold">🚪</div>
+                    <div>
+                        <h3 class="font-extrabold text-gray-800 text-base">Off-board Peserta</h3>
+                        <p class="text-xs text-gray-500" id="offboardParticipantInfo">Peserta: —</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeOffboardSingleModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tanggal Efektif Keluar <span class="text-red-500">*</span></label>
+                    <input type="date" name="off_boarding_effective_date" value="{{ now()->format('Y-m-d') }}" required class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Kategori / Alasan Keluar <span class="text-red-500">*</span></label>
+                    <select name="reason_preset" onchange="if(this.value && this.value!=='Lainnya') document.getElementById('singleOffReason').value=this.value" class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs bg-white focus:outline-none mb-2">
+                        <option value="">-- Pilih Alasan --</option>
+                        <option value="Selesai Masa Kontrak Penuh">Selesai Masa Kontrak Penuh</option>
+                        <option value="Pengunduran Diri (Resign)">Pengunduran Diri (Resign)</option>
+                        <option value="Pemulangan akibat Pelanggaran Disiplin">Pemulangan akibat Pelanggaran Disiplin</option>
+                        <option value="Alasan Medis / Kesehatan">Alasan Medis / Kesehatan</option>
+                        <option value="Lainnya">Lainnya (Tulis Manual)</option>
+                    </select>
+                    <textarea name="off_boarding_reason" id="singleOffReason" rows="2" required placeholder="Jelaskan alasan pengakhiran kontrak..." class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-200"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Catatan Tambahan (Opsional)</label>
+                    <input type="text" name="notes" placeholder="Catatan internal..." class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-200">
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-end gap-2 rounded-b-3xl">
+                <button type="button" onclick="closeOffboardSingleModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100">Batal</button>
+                <button type="submit" onclick="return confirm('Konfirmasi off-board peserta ini? Status akan berubah menjadi Off-boarded.')" class="px-5 py-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-xl text-xs font-bold shadow-sm">
+                    ✓ Proses Off-board
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+function openOffboardSingleModal(id, name, company) {
+    const modal = document.getElementById('singleOffboardModal');
+    const form = document.getElementById('singleOffboardForm');
+    form.action = `/hr-superadmin/offboarding/${id}/single`;
+    document.getElementById('offboardParticipantInfo').innerText = `${name} • ${company}`;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+function closeOffboardSingleModal() {
+    const modal = document.getElementById('singleOffboardModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+</script>
+@endpush
 @endsection

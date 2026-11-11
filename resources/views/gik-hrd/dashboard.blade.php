@@ -306,27 +306,48 @@
             </div>
         </div>
 
-        <!-- Quick Links to Request Hub -->
+        <!-- Quick Links to Pusat Pengajuan / Hub -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-            <h3 class="font-bold text-gray-800 mb-3">Quick Actions</h3>
-            <div class="space-y-2">
-                <a href="{{ route('gik-hrd.requests.create', 'add_contract') }}" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-red-50 hover:border-red-100 transition">
-                    <div class="w-9 h-9 rounded-lg bg-green-100 text-green-700 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold text-gray-800">Quick Actions</h3>
+                <a href="{{ route('gik-hrd.request-hub') }}" class="text-xs font-bold text-gik-primary hover:underline">Semua &rarr;</a>
+            </div>
+            <div class="space-y-2.5">
+                <a href="{{ route('gik-hrd.add-contract.list') }}" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-green-50 hover:border-green-200 transition group">
+                    <div class="w-9 h-9 rounded-lg bg-green-100 text-green-700 flex items-center justify-center group-hover:scale-105 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
                     </div>
-                    <div class="text-sm font-semibold text-gray-800">Add Contract</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-800 group-hover:text-green-800">Review Kandidat Baru</div>
+                        <div class="text-[11px] text-gray-500 truncate">Proposal Add Contract dari Gyokai</div>
+                    </div>
                 </a>
-                <a href="{{ route('gik-hrd.requests.create', 'extend_contract') }}" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-red-50 hover:border-red-100 transition">
-                    <div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
+                <a href="{{ route('gik-hrd.batch.select', 'extend_contract') }}" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition group">
+                    <div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center group-hover:scale-105 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                     </div>
-                    <div class="text-sm font-semibold text-gray-800">Extend Contract</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-800 group-hover:text-blue-800">Extend Contract Batch</div>
+                        <div class="text-[11px] text-gray-500 truncate">Perpanjang kontrak banyak peserta</div>
+                    </div>
                 </a>
-                <a href="{{ route('gik-hrd.requests.create', 'off_boarding') }}" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-red-50 hover:border-red-100 transition">
-                    <div class="w-9 h-9 rounded-lg bg-red-100 text-red-700 flex items-center justify-center">
+                <a href="{{ route('gik-hrd.batch.select', 'off_boarding') }}" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-red-50 hover:border-red-200 transition group">
+                    <div class="w-9 h-9 rounded-lg bg-red-100 text-red-700 flex items-center justify-center group-hover:scale-105 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                     </div>
-                    <div class="text-sm font-semibold text-gray-800">Off-boarding</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-800 group-hover:text-red-800">Off-boarding Batch</div>
+                        <div class="text-[11px] text-gray-500 truncate">Pelepasan / akhir kontrak peserta</div>
+                    </div>
+                </a>
+                <a href="{{ route('gik-hrd.operations') }}" class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition group">
+                    <div class="w-9 h-9 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center group-hover:scale-105 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm font-bold text-gray-800">Riwayat & Status Request</div>
+                        <div class="text-[11px] text-gray-500 truncate">Pantau status & persetujuan</div>
+                    </div>
                 </a>
             </div>
         </div>

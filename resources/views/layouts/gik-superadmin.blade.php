@@ -158,11 +158,12 @@
                     : (request()->routeIs('gik-superadmin.clients*') ? 'clients'
                     : (request()->routeIs('gik-superadmin.talents*') || request()->routeIs('gik-superadmin.client-needs*') ? 'talents'
                     : (request()->routeIs('gik-superadmin.inbox*') ? 'inbox'
+                    : (request()->routeIs('gik-superadmin.offboarding*') ? 'offboarding'
                     : (request()->routeIs('gik-superadmin.employees*') ? 'employees'
                     : (request()->routeIs('gik-superadmin.candidates*') ? 'candidates'
                     : (request()->routeIs('gik-superadmin.operations*') || request()->routeIs('gik-superadmin.requests*') || request()->routeIs('gik-superadmin.add-contract*') ? 'operations'
                     : (request()->routeIs('gik-superadmin.profile*') ? 'profile'
-                    : (request()->routeIs('gik-superadmin.activity*') ? 'activity-logs' : ''))))))));
+                    : (request()->routeIs('gik-superadmin.activity*') ? 'activity-logs' : '')))))))));
             @endphp
             <div class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white/40 mb-1">Overview</div>
             <a href="{{ route('gik-superadmin.dashboard') }}" class="gik-sidebar-link block px-3.5 py-3 rounded-lg text-[14px] text-white/75 pl-5 {{ $sMenu==='dashboard'?'active':'' }}">
@@ -197,10 +198,20 @@
                     Talent DB & Matching
                 </div>
             </a>
-            <a href="{{ route('gik-superadmin.operations') }}" class="gik-sidebar-link block px-3.5 py-3 rounded-lg text-[14px] text-white/75 pl-5 {{ $sMenu==='operations'?'active':'' }}">
-                <div class="flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Requests & Operations
+            <a href="{{ route('gik-superadmin.operations') }}" class="gik-sidebar-link block px-3.5 py-3 rounded-lg text-[14px] text-white/75 pl-5 relative {{ $sMenu==='operations'?'active':'' }}">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Monitoring Request & Operasi
+                    </div>
+                    @php
+                        $pendingAllReqsCount = \App\Models\HrRequest::withoutTenant()
+                            ->whereIn('status', ['submitted', 'in_review'])
+                            ->count();
+                    @endphp
+                    @if($pendingAllReqsCount > 0)
+                        <span class="text-[10px] font-extrabold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full px-2 py-0.5 min-w-[22px] text-center shadow-sm">{{ $pendingAllReqsCount }}</span>
+                    @endif
                 </div>
             </a>
 
@@ -209,6 +220,23 @@
                 <div class="flex items-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                     All Active Participants
+                </div>
+            </a>
+            <a href="{{ route('gik-superadmin.offboarding.index') }}" class="gik-sidebar-link block px-3.5 py-3 rounded-lg text-[14px] text-white/75 pl-5 relative {{ $sMenu==='offboarding'?'active':'' }}">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        Manajemen Off-boarding
+                    </div>
+                    @php
+                        $pendingOffCount = \App\Models\HrRequest::withoutTenant()
+                            ->where('request_type', 'off_boarding')
+                            ->whereIn('status', ['submitted', 'in_review'])
+                            ->count();
+                    @endphp
+                    @if($pendingOffCount > 0)
+                        <span class="text-[10px] font-extrabold text-white bg-gradient-to-r from-orange-500 to-red-500 rounded-full px-2 py-0.5 min-w-[22px] text-center shadow-sm">{{ $pendingOffCount }}</span>
+                    @endif
                 </div>
             </a>
             <a href="{{ route('gik-superadmin.candidates') }}" class="gik-sidebar-link block px-3.5 py-3 rounded-lg text-[14px] text-white/75 pl-5 {{ $sMenu==='candidates'?'active':'' }}">

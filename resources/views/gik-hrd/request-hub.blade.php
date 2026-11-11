@@ -46,27 +46,34 @@
 </div>
 
 <!-- Stats Overview -->
+<div class="mb-4 flex items-center justify-between">
+    <h2 class="text-xs font-bold uppercase tracking-wider text-gray-400">Ringkasan Status Permohonan</h2>
+    <a href="{{ route('gik-hrd.operations') }}" class="text-xs font-bold text-gik-primary hover:underline flex items-center gap-1">
+        Buka Semua Riwayat & Status
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </a>
+</div>
 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <div class="text-xs text-gray-500 font-medium mb-1">Total Requests</div>
+    <a href="{{ route('gik-hrd.operations') }}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:border-gray-300 hover:shadow-md transition block group">
+        <div class="text-xs text-gray-500 font-medium mb-1 group-hover:text-gray-700">Total Requests</div>
         <div class="text-2xl font-extrabold text-gray-800">{{ $stats['total'] }}</div>
-    </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <div class="text-xs text-gray-500 font-medium mb-1">Add Contract</div>
+    </a>
+    <a href="{{ route('gik-hrd.operations', ['type' => 'add_contract']) }}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:border-green-300 hover:shadow-md transition block group">
+        <div class="text-xs text-gray-500 font-medium mb-1 group-hover:text-green-700">Add Contract</div>
         <div class="text-2xl font-extrabold text-green-700">{{ $stats['add'] }}</div>
-    </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <div class="text-xs text-gray-500 font-medium mb-1">Extend Contract</div>
+    </a>
+    <a href="{{ route('gik-hrd.operations', ['type' => 'extend_contract']) }}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:border-blue-300 hover:shadow-md transition block group">
+        <div class="text-xs text-gray-500 font-medium mb-1 group-hover:text-blue-700">Extend Contract</div>
         <div class="text-2xl font-extrabold text-blue-700">{{ $stats['extend'] }}</div>
-    </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <div class="text-xs text-gray-500 font-medium mb-1">Off-boarding</div>
+    </a>
+    <a href="{{ route('gik-hrd.operations', ['type' => 'off_boarding']) }}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:border-red-300 hover:shadow-md transition block group">
+        <div class="text-xs text-gray-500 font-medium mb-1 group-hover:text-red-700">Off-boarding</div>
         <div class="text-2xl font-extrabold text-red-700">{{ $stats['off'] }}</div>
-    </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-        <div class="text-xs text-gray-500 font-medium mb-1">Pending Review</div>
+    </a>
+    <a href="{{ route('gik-hrd.operations', ['status' => 'submitted']) }}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:border-amber-300 hover:shadow-md transition block group">
+        <div class="text-xs text-gray-500 font-medium mb-1 group-hover:text-amber-700">Pending Review</div>
         <div class="text-2xl font-extrabold text-amber-700">{{ $stats['pending'] }}</div>
-    </div>
+    </a>
 </div>
 
 <div class="text-center bg-white rounded-2xl shadow-sm border border-dashed border-gray-200 p-8">

@@ -1,0 +1,107 @@
+{
+  "version": 2,
+  "skills": {
+    "antislop": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop/SKILL.md",
+      "computedHash": "a18e70f1622437839f79911ca072b00498885e2465eeb7588e6e2aecccd7c820"
+    },
+    "antislop-code": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-code/SKILL.md",
+      "computedHash": "648f9f24b44a610626dcd1dbe52a2147c3f5f994c3e641b83aeab58404a09fa9"
+    },
+    "antislop-copywriting": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-copywriting/SKILL.md",
+      "computedHash": "3b84ee78a04288074ddf4e0eec27439708ad7980935eb959d5c808b64b24ef6f"
+    },
+    "antislop-human": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-human/SKILL.md",
+      "computedHash": "8098865a109ce7fae31c38cc1f4b48597b0bef26c4c07312da32255c5017e98d"
+    },
+    "antislop-layoutmobile": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-layoutmobile/SKILL.md",
+      "computedHash": "90c893982c197eb438a7136aee48d084da7e9210127670e924431d45fecc225e"
+    },
+    "antislop-ui": {
+      "source": "miqdadbadjuber/anti-slop",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-ui/SKILL.md",
+      "computedHash": "588c3a726f2054c0aa3335f61cea6a3a9e53b2821cafda40d25ebf8d1c37e59e"
+    },
+    "api-security-testing": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/api-security-testing/SKILL.md",
+      "computedHash": "32f365479f3446fff784b2ccc48b5115cd06e27be980de90824638779d78c48b"
+    },
+    "application-security-testing": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/application-security-testing/SKILL.md",
+      "computedHash": "28c343b8c5cf3dd8daf7dda199d387761132b80f47648eb8aeb08502e158c446"
+    },
+    "ci-security-scanning-with-strix": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/ci-security-scanning-with-strix/SKILL.md",
+      "computedHash": "13949ab1e24f8cac87a11b221e55e52e6bfcf712ccd9eaeefeae4e3608c70d44"
+    },
+    "dev": {
+      "source": "microsoft/playwright-cli",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/dev/SKILL.md",
+      "computedHash": "c3841c205df161cd03481590ed0839849e5a7cb0886ccf603c4ecea25c775fed"
+    },
+    "find-security-vulnerabilities-in-code": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/find-security-vulnerabilities-in-code/SKILL.md",
+      "computedHash": "d9ea567e93b8add3991b0c43c1b9f3ea604c6c53e0f88ef4bcec3be9e616efac"
+    },
+    "fix-security-vulnerabilities-with-strix": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/fix-security-vulnerabilities-with-strix/SKILL.md",
+      "computedHash": "7febe815c271b39c688d583efef9a4f9674eaed063264f7218c7c67aacbd7abe"
+    },
+    "managed-pentesting-with-strix": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/managed-pentesting-with-strix/SKILL.md",
+      "computedHash": "20ff130aa03e3a497d822dff9694252c2c8986648d8747e6e0b67669f3c529a1"
+    },
+    "owasp-top-10-testing": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/owasp-top-10-testing/SKILL.md",
+      "computedHash": "dc3518dd62ce6b048dad7a969adfe88ea8e4d8bb8fd9c8a1627b443c8a508996"
+    },
+    "penetration-testing-with-strix": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/penetration-testing-with-strix/SKILL.md",
+      "computedHash": "54ba2e5fabb69e319421fdf6c8bdbd43650b66d0ed592b920f57e60e25d9e809"
+    },
+    "playwright-cli": {
+      "source": "microsoft/playwright-cli",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-cli/SKILL.md",
+      "computedHash": "d3c50339092b670cdda1ba2bed0bdee1c34247cdf70df475e8b7d83983a39e79"
+    },
+    "web-app-penetration-testing": {
+      "source": "usestrix/strix",
+      "sourceType": "github",
+      "skillPath": "skills/web-app-penetration-testing/SKILL.md",
+      "computedHash": "12d42989bda70f680c0c7b60aa8882f635d59aa7bc24e76eb78cbdf63085cba7"
+    }
+  }
+}

@@ -33,6 +33,9 @@ class HrEmployeeController extends Controller
         if ($request->filled('department') && $request->department !== 'all') {
             $query->where('department', $request->department);
         }
+        if ($request->filled('status') && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
         if ($isSuperAdmin && $request->filled('company_id') && $request->company_id !== 'all') {
             $query->where('company_id', $request->company_id);
         }
@@ -42,12 +45,13 @@ class HrEmployeeController extends Controller
         $companies = $isSuperAdmin ? \App\Models\Client::orderBy('company_name')->get() : collect();
         $selectedDept = $request->department;
         $selectedCompany = $request->company_id;
+        $selectedStatus = $request->status ?? 'all';
         $searchKeyword = $request->search;
 
         if ($isSuperAdmin) {
             return view('gik-superadmin.employees', compact(
                 'employees', 'departments', 'companies', 'isSuperAdmin',
-                'selectedDept', 'selectedCompany', 'searchKeyword'
+                'selectedDept', 'selectedCompany', 'selectedStatus', 'searchKeyword'
             ));
         }
 
@@ -255,9 +259,9 @@ class HrEmployeeController extends Controller
     public function reviewExpiring(HrContract $contract)
     {
         $this->authorizeAccess($contract);
-        return redirect()->route('gik-hrd.requests.create', [
+        return redirect()->route('gik-hrd.quick.action', [
             'type' => 'extend_contract',
-            'contract_id' => $contract->id,
+            'ids' => $contract->id,
         ]);
     }
 

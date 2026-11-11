@@ -16,6 +16,12 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
             Edit Data
         </a>
+        @if(in_array($contract->status, ['active', 'extended']))
+            <button type="button" onclick="openOffboardShowModal()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-xl text-sm font-bold shadow-sm transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                Off-board Peserta
+            </button>
+        @endif
     </div>
 </div>
 
@@ -117,4 +123,66 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Single Off-boarding -->
+<div id="singleOffboardModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden">
+        <form method="POST" action="{{ route('gik-superadmin.offboarding.single', $contract) }}">
+            @csrf
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-orange-50 to-white">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center font-bold">🚪</div>
+                    <div>
+                        <h3 class="font-extrabold text-gray-800 text-base">Off-board Peserta Ini</h3>
+                        <p class="text-xs text-gray-500">{{ $contract->full_name }} • {{ optional($contract->company)->company_name ?? '-' }}</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeOffboardShowModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tanggal Efektif Keluar <span class="text-red-500">*</span></label>
+                    <input type="date" name="off_boarding_effective_date" value="{{ now()->format('Y-m-d') }}" required class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Kategori / Alasan Keluar <span class="text-red-500">*</span></label>
+                    <select name="reason_preset" onchange="if(this.value && this.value!=='Lainnya') document.getElementById('showOffReason').value=this.value" class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs bg-white focus:outline-none mb-2">
+                        <option value="">-- Pilih Alasan --</option>
+                        <option value="Selesai Masa Kontrak Penuh">Selesai Masa Kontrak Penuh</option>
+                        <option value="Pengunduran Diri (Resign)">Pengunduran Diri (Resign)</option>
+                        <option value="Pemulangan akibat Pelanggaran Disiplin">Pemulangan akibat Pelanggaran Disiplin</option>
+                        <option value="Alasan Medis / Kesehatan">Alasan Medis / Kesehatan</option>
+                        <option value="Lainnya">Lainnya (Tulis Manual)</option>
+                    </select>
+                    <textarea name="off_boarding_reason" id="showOffReason" rows="2" required placeholder="Jelaskan alasan pengakhiran kontrak..." class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-200"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Catatan Tambahan (Opsional)</label>
+                    <input type="text" name="notes" placeholder="Catatan internal..." class="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-200">
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-end gap-2 rounded-b-3xl">
+                <button type="button" onclick="closeOffboardShowModal()" class="px-4 py-2 border border-gray-300 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100">Batal</button>
+                <button type="submit" onclick="return confirm('Konfirmasi off-board peserta ini? Status akan berubah menjadi Off-boarded.')" class="px-5 py-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-xl text-xs font-bold shadow-sm">
+                    ✓ Proses Off-board
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+function openOffboardShowModal() {
+    const modal = document.getElementById('singleOffboardModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+function closeOffboardShowModal() {
+    const modal = document.getElementById('singleOffboardModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+</script>
+@endpush
 @endsection

@@ -685,23 +685,355 @@ class HrContractFlowController extends Controller
 
     private function applyBatchRequest(HrRequest $req): void
     {
-        foreach ($req->batchItems as $item) {
-            $contract = $item->contract;
-            if (!$contract) continue;
-            $oldC = $contract->toArray();
+        if ($req->batchItems && $req->batchItems->isNotEmpty()) {
+            foreach ($req->batchItems as $item) {
+                $contract = $item->contract;
+                if (!$contract) continue;
+                $oldC = $contract->toArray();
 
+                if ($req->request_type === 'extend_contract') {
+                    $contract->contract_end = $item->new_contract_end ?? $contract->contract_end;
+                    $contract->status = 'extended';
+                    $contract->updated_by = Auth::id();
+                    $contract->save();
+                    HrAuditHelper::log('batch_extend_contract', 'hr_contract', $contract->id, $oldC, $contract->toArray(), 'warning');
+                } else if ($req->request_type === 'off_boarding') {
+                    $contract->status = 'offboarded';
+                    $contract->updated_by = Auth::id();
+                    $contract->save();
+                    HrAuditHelper::log('batch_off_boarding', 'hr_contract', $contract->id, $oldC, $contract->toArray(), 'critical');
+                }
+            }
+        } elseif ($req->contract) {
+            $contract = $req->contract;
+            $oldC = $contract->toArray();
             if ($req->request_type === 'extend_contract') {
-                $contract->contract_end = $item->new_contract_end ?? $contract->contract_end;
+                $contract->contract_end = $req->contract_end ?? $contract->contract_end;
                 $contract->status = 'extended';
                 $contract->updated_by = Auth::id();
                 $contract->save();
-                HrAuditHelper::log('batch_extend_contract', 'hr_contract', $contract->id, $oldC, $contract->toArray(), 'warning');
-            } else if ($req->request_type === 'off_boarding') {
+                HrAuditHelper::log('extend_contract', 'hr_contract', $contract->id, $oldC, $contract->toArray(), 'warning');
+            } elseif ($req->request_type === 'off_boarding') {
                 $contract->status = 'offboarded';
                 $contract->updated_by = Auth::id();
                 $contract->save();
-                HrAuditHelper::log('batch_off_boarding', 'hr_contract', $contract->id, $oldC, $contract->toArray(), 'critical');
+                HrAuditHelper::log('offboard_contract', 'hr_contract', $contract->id, $oldC, $contract->toArray(), 'critical');
             }
         }
+    }
+
+    // ==================== FLOW 4: MANAJEMEN OFF-BOARDING (SUPER ADMIN) ====================
+
+    public function listOffboardingForSuperAdmin(Request $request)
+    {
+        if (!Auth::user()->isSuperAdminRecruitment()) abort(403);
+
+        $activeTab = $request->query('tab', 'requests'); // 'requests' or 'history'
+        $selectedCompany = $request->query('company_id');
+        $statusFilter = $request->query('status', 'all');
+        $search = $request->query('search');
+
+        // Tab 1: Requests (Pengajuan Off-boarding dari HR Company)
+        $reqQuery = HrRequest::withoutTenant()
+            ->where('request_type', 'off_boarding')
+            ->with(['company', 'contract', 'batchItems.contract', 'submittedBy', 'reviewedBy'])
+            ->orderByDesc('created_at');
+
+        if ($selectedCompany && $selectedCompany !== 'all') {
+            $reqQuery->where('company_id', $selectedCompany);
+        }
+        if ($statusFilter && $statusFilter !== 'all') {
+            $reqQuery->where('status', $statusFilter);
+        }
+        if ($search) {
+            $s = '%' . trim($search) . '%';
+            $reqQuery->where(function ($q) use ($s) {
+                $q->where('request_number', 'like', $s)
+                    ->orWhere('first_name', 'like', $s)
+                    ->orWhere('last_name', 'like', $s)
+                    ->orWhereHas('company', fn($q2) => $q2->where('company_name', 'like', $s));
+            });
+        }
+        $requests = $reqQuery->paginate(12, ['*'], 'req_page')->withQueryString();
+
+        // Tab 2: History Peserta yang sudah di-offboard
+        $histQuery = HrContract::withoutTenant()
+            ->whereIn('status', ['offboarded', 'terminated'])
+            ->with('company')
+            ->orderByDesc('updated_at');
+
+        if ($selectedCompany && $selectedCompany !== 'all') {
+            $histQuery->where('company_id', $selectedCompany);
+        }
+        if ($search) {
+            $s = '%' . trim($search) . '%';
+            $histQuery->where(function ($q) use ($s) {
+                $q->where('first_name', 'like', $s)
+                    ->orWhere('last_name', 'like', $s)
+                    ->orWhere(DB::raw("CONCAT_WS(' ', first_name, last_name)"), 'like', $s)
+                    ->orWhere('national_id', 'like', $s)
+                    ->orWhere('employee_id', 'like', $s);
+            });
+        }
+        $offboardedParticipants = $histQuery->paginate(15, ['*'], 'hist_page')->withQueryString();
+
+        // Stats
+        $pendingReviewsCount = HrRequest::withoutTenant()
+            ->where('request_type', 'off_boarding')
+            ->whereIn('status', ['submitted', 'in_review'])
+            ->count();
+        $totalOffboardedCount = HrContract::withoutTenant()
+            ->whereIn('status', ['offboarded', 'terminated'])
+            ->count();
+        $offboardedThisMonth = HrContract::withoutTenant()
+            ->whereIn('status', ['offboarded', 'terminated'])
+            ->whereMonth('updated_at', now()->month)
+            ->whereYear('updated_at', now()->year)
+            ->count();
+        $totalActiveCount = HrContract::withoutTenant()
+            ->whereIn('status', ['active', 'extended'])
+            ->count();
+
+        $companies = \App\Models\Client::where('is_active', true)->orderBy('company_name')->get();
+
+        return view('gik-superadmin.offboarding-index', [
+            'requests' => $requests,
+            'offboardedParticipants' => $offboardedParticipants,
+            'activeTab' => $activeTab,
+            'selectedCompany' => $selectedCompany,
+            'statusFilter' => $statusFilter,
+            'search' => $search,
+            'pendingReviewsCount' => $pendingReviewsCount,
+            'totalOffboardedCount' => $totalOffboardedCount,
+            'offboardedThisMonth' => $offboardedThisMonth,
+            'totalActiveCount' => $totalActiveCount,
+            'companies' => $companies,
+            'pageTitle' => 'Manajemen Off-boarding Peserta — Super Admin',
+            'sMenu' => 'offboarding',
+        ]);
+    }
+
+    public function createDirectOffboardingForm(Request $request)
+    {
+        if (!Auth::user()->isSuperAdminRecruitment()) abort(403);
+
+        $companies = \App\Models\Client::where('is_active', true)->orderBy('company_name')->get();
+        $selectedCompanyId = $request->query('company_id');
+        $participants = collect();
+
+        if ($selectedCompanyId) {
+            $participants = HrContract::withoutTenant()
+                ->where('company_id', $selectedCompanyId)
+                ->whereIn('status', ['active', 'extended'])
+                ->orderBy('first_name')
+                ->get();
+        }
+
+        return view('gik-superadmin.offboarding-create', [
+            'companies' => $companies,
+            'selectedCompanyId' => $selectedCompanyId,
+            'participants' => $participants,
+            'pageTitle' => 'Proses Off-boarding Langsung — Super Admin',
+            'sMenu' => 'offboarding',
+        ]);
+    }
+
+    public function storeDirectOffboarding(Request $request)
+    {
+        if (!Auth::user()->isSuperAdminRecruitment()) abort(403);
+
+        $validated = $request->validate([
+            'company_id' => 'required|exists:clients,id',
+            'contract_ids' => 'required|array|min:1',
+            'contract_ids.*' => 'required|exists:hr_contracts,id',
+            'off_boarding_effective_date' => 'required|date',
+            'off_boarding_reason' => 'required|string|min:3|max:1000',
+            'notes' => 'nullable|string|max:1000',
+        ]);
+
+        $company = \App\Models\Client::find($validated['company_id']);
+        $contracts = HrContract::withoutTenant()
+            ->whereIn('id', $validated['contract_ids'])
+            ->where('company_id', $validated['company_id'])
+            ->get();
+
+        if ($contracts->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada data peserta valid yang dipilih.')->withInput();
+        }
+
+        DB::beginTransaction();
+        try {
+            $hrReq = HrRequest::create([
+                'company_id' => $validated['company_id'],
+                'contract_id' => $contracts->count() === 1 ? $contracts->first()->id : null,
+                'request_number' => HrAuditHelper::generateRequestNumber('OFF'),
+                'request_type' => 'off_boarding',
+                'status' => 'completed',
+                'current_step' => 3,
+                'total_steps' => 3,
+                'off_boarding_date' => $validated['off_boarding_effective_date'],
+                'off_boarding_reason' => $validated['off_boarding_reason'],
+                'submitted_by' => Auth::id(),
+                'submitted_at' => now(),
+                'reviewed_by' => Auth::id(),
+                'reviewed_at' => now(),
+                'review_notes' => 'Diproses langsung oleh Tim Rekrutmen Super Admin. ' . ($validated['notes'] ?? ''),
+                'created_by' => Auth::id(),
+            ]);
+
+            foreach ($contracts as $c) {
+                HrBatchItem::create([
+                    'request_id' => $hrReq->id,
+                    'contract_id' => $c->id,
+                    'off_boarding_effective_date' => $validated['off_boarding_effective_date'],
+                    'off_boarding_reason' => $validated['off_boarding_reason'],
+                    'notes' => $validated['notes'] ?? null,
+                ]);
+
+                $oldC = $c->toArray();
+                $c->status = 'offboarded';
+                $c->updated_by = Auth::id();
+                $c->save();
+
+                HrAuditHelper::log('direct_offboard_participant', 'hr_contract', $c->id, $oldC, $c->toArray(), 'critical');
+            }
+
+            // Kirim notifikasi pesan ke HR Company
+            \App\Models\HrMessage::create([
+                'company_id' => $validated['company_id'],
+                'from_user_id' => Auth::id(),
+                'to_user_id' => null,
+                'message_type' => 'contract_request',
+                'subject' => "🚪 Super Admin memproses Off-boarding {$contracts->count()} peserta",
+                'body' => "Tim Rekrutmen Super Admin telah memproses status Off-boarding untuk " . $contracts->count() . " peserta di perusahaan {$company->company_name}. Nomor referensi: {$hrReq->request_number}. Alasan: {$validated['off_boarding_reason']}.",
+                'priority' => 'high',
+                'status' => 'unread',
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal memproses off-boarding: ' . $e->getMessage())->withInput();
+        }
+
+        return redirect()->route('gik-superadmin.offboarding.index', ['tab' => 'history'])
+            ->with('success', "Berhasil memproses off-boarding untuk {$contracts->count()} peserta.");
+    }
+
+    public function singleOffboarding(Request $request, HrContract $hrContract)
+    {
+        if (!Auth::user()->isSuperAdminRecruitment()) abort(403);
+
+        $validated = $request->validate([
+            'off_boarding_effective_date' => 'required|date',
+            'off_boarding_reason' => 'required|string|min:3|max:1000',
+            'notes' => 'nullable|string|max:1000',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $hrReq = HrRequest::create([
+                'company_id' => $hrContract->company_id,
+                'contract_id' => $hrContract->id,
+                'request_number' => HrAuditHelper::generateRequestNumber('OFF'),
+                'request_type' => 'off_boarding',
+                'status' => 'completed',
+                'current_step' => 3,
+                'total_steps' => 3,
+                'off_boarding_date' => $validated['off_boarding_effective_date'],
+                'off_boarding_reason' => $validated['off_boarding_reason'],
+                'submitted_by' => Auth::id(),
+                'submitted_at' => now(),
+                'reviewed_by' => Auth::id(),
+                'reviewed_at' => now(),
+                'review_notes' => 'Single off-boarding oleh Super Admin. ' . ($validated['notes'] ?? ''),
+                'created_by' => Auth::id(),
+            ]);
+
+            HrBatchItem::create([
+                'request_id' => $hrReq->id,
+                'contract_id' => $hrContract->id,
+                'off_boarding_effective_date' => $validated['off_boarding_effective_date'],
+                'off_boarding_reason' => $validated['off_boarding_reason'],
+                'notes' => $validated['notes'] ?? null,
+            ]);
+
+            $oldC = $hrContract->toArray();
+            $hrContract->status = 'offboarded';
+            $hrContract->updated_by = Auth::id();
+            $hrContract->save();
+
+            HrAuditHelper::log('single_offboard_participant', 'hr_contract', $hrContract->id, $oldC, $hrContract->toArray(), 'critical');
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal memproses off-boarding: ' . $e->getMessage());
+        }
+
+        return redirect()->back()->with('success', "Peserta {$hrContract->full_name} berhasil di-offboard.");
+    }
+
+    public function getRequestDetailJson(HrRequest $hrRequest)
+    {
+        $user = Auth::user();
+        if (!$user->isSuperAdminRecruitment()) {
+            if ($hrRequest->company_id !== $user->company_id) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+            }
+        }
+
+        $hrRequest->load(['company', 'contract', 'batchItems.contract', 'submittedBy', 'reviewedBy']);
+
+        $items = [];
+        if ($hrRequest->batchItems->isNotEmpty()) {
+            foreach ($hrRequest->batchItems as $bi) {
+                $c = $bi->contract;
+                $items[] = [
+                    'contract_id' => $bi->contract_id,
+                    'full_name' => $c ? $c->full_name : '—',
+                    'employee_id' => $c ? $c->employee_id : '—',
+                    'national_id' => $c ? $c->national_id : '—',
+                    'job_title' => $c ? $c->job_title : '—',
+                    'contract_end' => $c && $c->contract_end ? $c->contract_end->format('d M Y') : '—',
+                    'new_contract_end' => $bi->new_contract_end ? $bi->new_contract_end->format('d M Y') : null,
+                    'off_boarding_effective_date' => $bi->off_boarding_effective_date ? $bi->off_boarding_effective_date->format('d M Y') : null,
+                    'off_boarding_reason' => $bi->off_boarding_reason,
+                    'notes' => $bi->notes,
+                ];
+            }
+        } elseif ($hrRequest->contract) {
+            $c = $hrRequest->contract;
+            $items[] = [
+                'contract_id' => $c->id,
+                'full_name' => $c->full_name,
+                'employee_id' => $c->employee_id,
+                'national_id' => $c->national_id,
+                'job_title' => $c->job_title,
+                'contract_end' => $c->contract_end ? $c->contract_end->format('d M Y') : '—',
+                'new_contract_end' => $hrRequest->contract_end ? $hrRequest->contract_end->format('d M Y') : null,
+                'off_boarding_effective_date' => $hrRequest->off_boarding_date ? $hrRequest->off_boarding_date->format('d M Y') : null,
+                'off_boarding_reason' => $hrRequest->off_boarding_reason,
+                'notes' => null,
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $hrRequest->id,
+                'request_number' => $hrRequest->request_number,
+                'request_type' => $hrRequest->request_type,
+                'request_type_label' => $hrRequest->request_type === 'extend_contract' ? 'Extend Contract' : ($hrRequest->request_type === 'off_boarding' ? 'Off-boarding' : 'Add Contract'),
+                'status' => $hrRequest->status,
+                'company_name' => $hrRequest->company?->company_name ?? '—',
+                'submitted_by' => $hrRequest->submittedBy?->name ?? '—',
+                'submitted_at' => $hrRequest->submitted_at ? $hrRequest->submitted_at->format('d M Y, H:i') : ($hrRequest->created_at ? $hrRequest->created_at->format('d M Y, H:i') : '—'),
+                'reviewed_by' => $hrRequest->reviewedBy?->name ?? '—',
+                'reviewed_at' => $hrRequest->reviewed_at ? $hrRequest->reviewed_at->format('d M Y, H:i') : null,
+                'review_notes' => $hrRequest->review_notes,
+                'items' => $items,
+            ],
+        ]);
     }
 }

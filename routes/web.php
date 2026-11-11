@@ -438,6 +438,7 @@
             Route::post('/requests/{hrRequest}/submit', [\App\Http\Controllers\HrRequestHubController::class, 'submit'])->name('requests.submit');
             Route::delete('/requests/{hrRequest}', [\App\Http\Controllers\HrRequestHubController::class, 'destroy'])->name('requests.destroy');
             Route::post('/requests/{hrRequest}/review', [\App\Http\Controllers\HrRequestHubController::class, 'review'])->name('requests.review');
+            Route::get('/requests/{hrRequest}/detail-json', [\App\Http\Controllers\HrContractFlowController::class, 'getRequestDetailJson'])->name('requests.detail-json');
 
             // ===== Add New Contract (HR Company side - review & seleksi kandidat) =====
             Route::get('/add-contracts', [\App\Http\Controllers\HrContractFlowController::class, 'listAddContractForHrd'])->name('add-contract.list');
@@ -584,6 +585,7 @@
             Route::post('/requests/{hrRequest}/submit', [\App\Http\Controllers\HrRequestHubController::class, 'submit'])->name('requests.submit');
             Route::delete('/requests/{hrRequest}', [\App\Http\Controllers\HrRequestHubController::class, 'destroy'])->name('requests.destroy');
             Route::post('/requests/{hrRequest}/review', [\App\Http\Controllers\HrRequestHubController::class, 'review'])->name('requests.review');
+            Route::get('/requests/{hrRequest}/detail-json', [\App\Http\Controllers\HrContractFlowController::class, 'getRequestDetailJson'])->name('requests.detail-json');
 
             // ===== Panduan Penggunaan =====
             Route::get('/panduan', [\App\Http\Controllers\HrSuperAdminController::class, 'panduan'])->name('panduan');
@@ -602,6 +604,13 @@
 
             // Flow 3 & 4: Review Batch Extend / Off-boarding dari HR Company
             Route::post('/requests/{hrRequest}/review-batch', [\App\Http\Controllers\HrContractFlowController::class, 'reviewBatchRequest'])->name('requests.review-batch');
+            Route::get('/requests/{hrRequest}/detail-json', [\App\Http\Controllers\HrContractFlowController::class, 'getRequestDetailJson'])->name('requests.detail-json');
+
+            // Flow 4: Manajemen Off-boarding (Super Admin Rekrutmen)
+            Route::get('/offboarding', [\App\Http\Controllers\HrContractFlowController::class, 'listOffboardingForSuperAdmin'])->name('offboarding.index');
+            Route::get('/offboarding/create', [\App\Http\Controllers\HrContractFlowController::class, 'createDirectOffboardingForm'])->name('offboarding.create');
+            Route::post('/offboarding', [\App\Http\Controllers\HrContractFlowController::class, 'storeDirectOffboarding'])->name('offboarding.store');
+            Route::post('/offboarding/{hrContract}/single', [\App\Http\Controllers\HrContractFlowController::class, 'singleOffboarding'])->name('offboarding.single');
         });
 
         // Helper redirect route for HR Portal (auto redirect based on role)
